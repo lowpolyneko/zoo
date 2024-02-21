@@ -118,6 +118,7 @@ Animal* createAnimal(const char* name, const char* species, int age) {
 // Function to free an Animal
 void freeAnimal(Animal* animal) {
     if (animal != NULL) {
+	free(animal->name);
         free(animal);
     }
 }
@@ -155,6 +156,7 @@ Animal* findAnimalByName(DoublyLinkedList* list, const char* name) {
 // Rename an existing animal
 void renameAnimal(Animal* animal, const char* newName) {
     if (animal != NULL) {
+	free(animal->name);
         animal->name = strdup(newName); // Assign the new name
     }
 }
@@ -227,7 +229,7 @@ int main() {
     printf("Using %ld bytes before cleaning up.\n",mallinfo2().uordblks);
 
     while (list->head != NULL) {
-        removeElement(list, list->head);
+        freeAnimal((Animal *)removeElement(list, list->head));
     }
     free(list);
     printf("Using %ld bytes after cleaning up\n",mallinfo2().uordblks);
